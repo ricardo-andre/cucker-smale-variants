@@ -1,6 +1,6 @@
 # cucker-smale-variants
 
-A simple simulation in [NetLogo](https://github.com/NetLogo/NetLogo) to illustrate a few carachteristics of the Cucker-Smale model, using a few combinations of model parameters (standard, singular, and normalized comunication functions) and initial configurations (random, collision, and clustered) in 2D and (initial) 1D space. See the model's Info Tab for more information.
+A simple simulation in [NetLogo](http://ccl.northwestern.edu/netlogo/) to illustrate a few carachteristics of the Cucker-Smale model, using a few combinations of model parameters (standard, singular, and normalized comunication functions) and initial configurations (random, collision, and clustered) in 2D and (initial) 1D space. See the model's Info Tab for more information.
 
 Part of a "Movimento de partículas auto-propulsionadas - Modelo de Cucker-Smale e variantes: análise e simulações", a [MSc at Universidade Aberta](https://guiadoscursos.uab.pt/cursos/mestrado-em-estatistica-matematica-e-computacao/), Portugal.
 
