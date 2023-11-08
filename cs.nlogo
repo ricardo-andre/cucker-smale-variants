@@ -547,7 +547,7 @@ K
 K
 0.1
 4
-1.1
+1.0
 .1
 1
 NIL
@@ -814,7 +814,7 @@ Will birds flock or not? Two plots help to quantify that. MAX RADIUS is the dist
 How does a bird's position affect its own speed? Will there be one or more flocks?
 
 
-### Known approximation and errors
+### Known approximations and errors
 
 The simulation solves the equations using a Euler method, so the solutions may drift away from the real ones. For the purposes of showcasing the main characteristics of the model this is not a problem as long as the errors are small, but solution are not accurate.
 
@@ -860,11 +860,11 @@ From the NetLogo library:
 
 ## CREDITS AND REFERENCES
 
-Part of a "Movimento de partículas auto-propulsionadas - Modelo de Cucker-Smale e variantes: análise e simulações", a MSc at Universidade Aberta, Portugal. The main reference for the dissertation is:
+Part of "Movimento de partículas auto-propulsionadas - Modelo de Cucker-Smale e variantes: análise e simulações", a [Masters Dissertation at Universidade Aberta](https://guiadoscursos.uab.pt/cursos/mestrado-em-estatistica-matematica-e-computacao/), Portugal. The main reference for the dissertation is:
 
 Young Pil Choi, Seung Yeal Ha e Zhuchun Li. “Emergent dynamics of the cucker–Smale flocking model and its variants”. In: Modeling and Simulation in Science, Engineering and Technology. Active Particles, Volume 1. Ed. por Nicola Bellomo, Pierre Degond e Eitan Tadmor. Birkhäuser, Cham., 2017, pp. 299–331. DOI: 10.1007/978-3-319-49996-3_8
 
-The initial version of this was written while attending the online course on "Introduction to Agent-Based Modeling", at Santa Fe Institute's complexityexplorer.org. See: https://www.complexityexplorer.org/courses/171-introduction-to-agent-based-modeling
+The initial version of this was written while attending the online course on "[Introduction to Agent-Based Modeling](https://www.complexityexplorer.org/courses/171-introduction-to-agent-based-modeling)", at Santa Fe Institute's [complexityexplorer.org](https://www.complexityexplorer.org).
 
 ## HOW TO CITE
 
