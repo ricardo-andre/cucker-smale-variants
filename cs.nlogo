@@ -241,7 +241,7 @@ to set-speed-random-gamma
       set vy speed * cos heading
     ]
     dimension = "1D" [
-      set vx speed
+      set vx (- speed)
       set vy 0
   ])
 end
@@ -448,9 +448,9 @@ to-report atan2 [x y]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-305
+295
 10
-810
+800
 516
 -1
 -1
@@ -475,10 +475,10 @@ ticks
 30.0
 
 BUTTON
-15
-335
-92
-368
+20
+445
+97
+478
 NIL
 setup
 NIL
@@ -492,10 +492,10 @@ NIL
 1
 
 BUTTON
-190
-335
-271
-368
+195
+445
+276
+478
 NIL
 go
 T
@@ -517,47 +517,47 @@ population
 population
 2
 100
-100.0
+10.0
 2
 1
 NIL
 HORIZONTAL
 
 SLIDER
-15
-240
-187
-273
+10
+345
+285
+378
 beta
 beta
 0.1
 2.5
-1.1
+1.0
 .1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-15
-277
-187
-310
+10
+382
+285
+415
 K
 K
 0.1
 4
-0.1
+1.1
 .1
 1
 NIL
 HORIZONTAL
 
 BUTTON
-100
-335
-181
-368
+105
+445
+186
+478
 go once
 go
 NIL
@@ -571,10 +571,10 @@ NIL
 0
 
 SLIDER
-10
-180
-145
-213
+5
+205
+140
+238
 vel-mean
 vel-mean
 0.1
@@ -586,10 +586,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-150
-180
-285
-213
+145
+205
+280
+238
 vel-stdev
 vel-stdev
 0.1
@@ -601,24 +601,24 @@ NIL
 HORIZONTAL
 
 SLIDER
-50
-65
-222
-98
+5
+140
+280
+173
 radius
 radius
 5
 30
-15.0
+10.0
 5
 1
 NIL
 HORIZONTAL
 
 PLOT
-830
+820
 10
-1030
+1020
 160
 max radius
 ticks
@@ -634,10 +634,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot stat-max-radius"
 
 PLOT
-1040
-10
-1240
-160
+820
+230
+1020
+380
 max speed
 ticks
 speed
@@ -652,10 +652,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot stat-max-speed"
 
 MONITOR
-1040
-165
-1240
-210
+820
+395
+1020
+440
 max speed
 stat-max-speed
 17
@@ -663,9 +663,9 @@ stat-max-speed
 11
 
 MONITOR
-830
+820
 170
-1030
+1020
 215
 max radius
 stat-max-radius
@@ -674,10 +674,10 @@ stat-max-radius
 11
 
 PLOT
-825
-380
-1025
-530
+1045
+10
+1245
+160
 centre error
 ticks
 error
@@ -692,10 +692,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot error-centre"
 
 PLOT
-825
-545
-1025
-695
+1045
+165
+1245
+315
 velocity error
 ticks
 error
@@ -710,10 +710,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot error-velocity"
 
 PLOT
-1035
-380
-1235
-530
+1045
+320
+1245
+470
 birds at the edge of the world
 ticks
 birds
@@ -728,10 +728,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot count error-turtles-at-the-wall"
 
 CHOOSER
-165
+155
+85
+247
 130
-257
-175
 dimension
 dimension
 "1D" "2D"
@@ -749,20 +749,20 @@ initial-random-seed
 11
 
 CHOOSER
-195
-250
+10
 290
-295
+105
+335
 psi-type
 psi-type
 "standard" "singular" "normalized"
-2
+0
 
 CHOOSER
-15
+5
+85
+143
 130
-153
-175
 topology-type
 topology-type
 "random" "collision" "bi-cluster"
@@ -790,11 +790,21 @@ For simplicity, the velocity is set in (opposing) pairs. It allows for a simple 
 
 ## HOW TO USE IT
 
-Set the POPULATION size the determine the number of birds. Set the mean and standard deviation of the speed, VEL-MEAN and VEL-STDEV. Not the speed is using a beta distribution, so it has a long tail and may generate a few quite fast birds. Choose the RADIUS around the center in which the birds will be generated. Choose BETA and K for the communication function, BETA controls how strong is long range effect, the smaller the BETA the stronger, K is a overall weight. Hit SETUP and the GO, for continuous computation, or GO ONCE to go one tick at a time.
+Set the POPULATION size.
+
+Choose the RADIUS around the center in which the birds will be generated. Choose the initial TOPOLOGY-TYPE. "Random" places birds in a uniform distribution inside a circle, "collision" places all birds pointing to the centre, "bi-cluster" places them in two (symmetric) clusters. If DIMENSION is set to 1D, the birds will be placed on a line.
+
+Choose the mean and standard deviation of the speed, VEL-MEAN and VEL-STDEV. The speed is using a beta distribution, so it has a long tail and may generate a few quite fast(er) birds.
+
+Choose the type of communication function, PSI-TYPE. The options are "standard" for a finite positive and symmetric communication, "singular" for a communication with a singularity at the origin, "normalized" for a standard weighted communication.
+
+Choose BETA and K for the communication function, BETA controls how strong is long range effect, the smaller BETA is the stronger the long range effect. In "singular psi" mode BETA also affects the short range effect, the larger is BETA the stronger is the effect. K is a overall weight.
+
+Hit SETUP to (re)set the model. Hit GO for continuous computation, or GO ONCE to go one tick at a time.
 
 The simulation may take some time to stop, so you might want to increase the simulation speed (using the slider at the top).
 
-The code is not robust, it does almost no error checking. If you change parameters while the model is running it is possible that it breaks. Or not... try anyway. Expect it go wrong if you do.
+The code is not robust, it does almost no error checking. If you change parameters while the model is running it is possible that it breaks. Or not... try anyway, but expect it to go wrong if you do.
 
 
 ## THINGS TO NOTICE
@@ -803,9 +813,16 @@ Will birds flock or not? Two plots help to quantify that. MAX RADIUS is the dist
 
 How does a bird's position affect its own speed? Will there be one or more flocks?
 
-You should pay attention to error indicators, if they go too high the model is no longer a good approximation. The center of mass and also the average velocity should theoretically be fixed at zero. CENTER and VELOCITY ERROR plots show how large the drift from zero is. The velocity change is symmetric, so that error should remain near zero. 	The position of the center of mass is expected to drift while using a Euler method solution.
 
-The world can not be infinite, so there is also an indication of how many birds have reached THE EDGE OF THE WORLD. As soon as one bird does, the model is no longer valid, and the world will become light pink, to warn about a clear loss of validity. The calculation will nevertheless carry on until there are more than 10% at the edge, because it still gives some visual idea of the interaction.
+### Known approximation and errors
+
+The simulation solves the equations using a Euler method, so the solutions may drift away from the real ones. For the purposes of showcasing the main characteristics of the model this is not a problem as long as the errors are small, but solution are not accurate.
+
+You should pay attention to error indicators, at the bottom right. If they go too high the model is no longer a good approximation. The centre of mass and also the average velocity should theoretically be fixed at zero. CENTER and VELOCITY ERROR plots show how large the drift from zero is.
+
+The world is finite, so there is also an indication of how many birds have reached THE EDGE OF THE WORLD. As soon as one bird does, the model is no longer valid, and the background will become light pink, to warn about a clear loss of validity. The calculation will nevertheless carry on until there are more than 10% of birds at the edge, because it still gives some visual idea of the interaction.
+
+In some corner cases the calculation may break completelly, due to the Euler method. One known case may be caused sometimes by setting a "collition" topology in "1D" with "singular" communication function.
 
 
 ## THINGS TO TRY
@@ -816,6 +833,11 @@ The K factor also influences how fast it takes for flocking to happen. You may c
 
 If not flocking, while the birds disperse as a whole, are there still some (sub) groups which are flocking?
 
+Some good combinations of TOPOLOGY, DIMENSION, and PSI to try are
+- random, 1D, standard and singular, 2 birds
+- random, 2D, standard, many birds
+- collision, 2D, singular
+- bi-cluster, 2D, standard
 
 ## EXTENDING THE MODEL
 
