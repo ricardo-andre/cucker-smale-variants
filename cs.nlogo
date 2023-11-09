@@ -132,6 +132,7 @@ to turtles-random-position
       dimension = "1D" [
         let x random-float (2 * radius) - radius
         setxy x 0
+        set heading 90
     ])
   ]
 end
@@ -186,7 +187,7 @@ to turtles-collision-startup
           let x random-float radius
           setxy x 0
       ])
-      facexy 0 0
+      facexy 0 0; sets heading
       set-speed-random-gamma
       let mypair one-of other turtles with [done = 0]
       ask mypair [
@@ -211,12 +212,13 @@ to turtles-bi-startup
         dimension = "2D" [
           set xcor (radius / 2) +  random-float (radius / 10)
           set ycor (- radius / 20) + random-float (radius / 10)
+          set heading -45 + random-float 90
         ]
         dimension = "1D" [
           set xcor (radius / 2) +  random-float (radius / 10)
           set ycor 0
-      ])
-      set heading -45 + random-float 90
+          set heading 90
+  ])
       set-speed-random-gamma
       let mypair one-of other turtles with [done = 0]
       ask mypair [
@@ -235,16 +237,10 @@ end
 
 to set-speed-random-gamma
   set speed random-gamma ((vel-mean / vel-stdev) ^ 2) (vel-mean / vel-stdev ^ 2)
-  (ifelse
-    dimension = "2D" [
-      set vx speed * sin heading
-      set vy speed * cos heading
-    ]
-    dimension = "1D" [
-      set vx (- speed)
-      set vy 0
-  ])
+  set vx speed * sin heading
+  set vy speed * cos heading
 end
+
 
 to go
   ;; compute the rate of chage of velocity, dotv
