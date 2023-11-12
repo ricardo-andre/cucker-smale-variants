@@ -58,12 +58,14 @@ to startup
   ; on first interactive run
   ; loads defaults for...
   ; ... user parameters
-  set population 10
+  set population 20
+  set trace? false
+  set my-random-seed 0
   set radius 10
   set topology-type "random"
+  set dimension "2D"
   set vel-mean 1
   set vel-stdev 0.2
-  set dimension "2D"
   set psi-type "standard"
   set beta 1
   set K 1
@@ -82,8 +84,12 @@ to setup
   set speed0 10 ^ -3
   set time-scale 0.1
 
-  set initial-random-seed new-seed
+  ; random or repeat run?
+  ifelse (my-random-seed = 0)
+  [set initial-random-seed new-seed]
+  [set initial-random-seed my-random-seed]
   random-seed initial-random-seed
+  set show-random-seed initial-random-seed ;easier to copy
 
   if (population mod 2 = 1) [set population population + 1]
   create-turtles population [
@@ -115,6 +121,8 @@ to setup
       set hidden? true
     ]
   ]
+
+  ifelse trace? [ask turtles [pen-down]] [ask turtles [pen-up]]
 
   update-stats
 
@@ -263,7 +271,7 @@ to go
     set vx vx + deltavx * time-scale
     set vy vy + deltavy * time-scale
     set speed sqrt (vx ^ 2 + vy ^ 2)
-    set heading atan vx vy
+    set heading atan2 vx vy
     ; (almost) stopped turtles lose direction
     if (speed < speed0) and (shape = "default") [
       set size size / 2
@@ -444,9 +452,9 @@ to-report atan2 [x y]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-295
+225
 10
-800
+730
 516
 -1
 -1
@@ -471,9 +479,9 @@ ticks
 30.0
 
 BUTTON
-20
+10
 445
-97
+70
 478
 NIL
 setup
@@ -488,9 +496,9 @@ NIL
 1
 
 BUTTON
-195
+150
 445
-276
+210
 478
 NIL
 go
@@ -505,15 +513,15 @@ NIL
 0
 
 SLIDER
-5
+15
 10
-280
+215
 43
 population
 population
 2
 100
-10.0
+20.0
 2
 1
 NIL
@@ -521,9 +529,9 @@ HORIZONTAL
 
 SLIDER
 10
-345
-285
-378
+360
+210
+393
 beta
 beta
 0.1
@@ -536,9 +544,9 @@ HORIZONTAL
 
 SLIDER
 10
-382
-285
-415
+397
+210
+430
 K
 K
 0.1
@@ -550,9 +558,9 @@ NIL
 HORIZONTAL
 
 BUTTON
-105
+80
 445
-186
+140
 478
 go once
 go
@@ -567,10 +575,10 @@ NIL
 0
 
 SLIDER
-5
-205
-140
-238
+10
+245
+110
+278
 vel-mean
 vel-mean
 0.1
@@ -582,10 +590,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-145
-205
-280
-238
+120
+245
+215
+278
 vel-stdev
 vel-stdev
 0.1
@@ -597,10 +605,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-5
-140
-280
-173
+15
+190
+215
+223
 radius
 radius
 5
@@ -612,9 +620,9 @@ NIL
 HORIZONTAL
 
 PLOT
-820
+735
 10
-1020
+935
 160
 max radius
 ticks
@@ -630,10 +638,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot stat-max-radius"
 
 PLOT
-820
-230
-1020
-380
+735
+260
+935
+410
 max speed
 ticks
 speed
@@ -648,10 +656,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot stat-max-speed"
 
 MONITOR
-820
-395
-1020
-440
+735
+425
+935
+470
 max speed
 stat-max-speed
 17
@@ -659,9 +667,9 @@ stat-max-speed
 11
 
 MONITOR
-820
+735
 170
-1020
+935
 215
 max radius
 stat-max-radius
@@ -670,9 +678,9 @@ stat-max-radius
 11
 
 PLOT
-1045
+960
 10
-1245
+1160
 160
 centre error
 ticks
@@ -688,9 +696,9 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot error-centre"
 
 PLOT
-1045
+960
 165
-1245
+1160
 315
 velocity error
 ticks
@@ -706,9 +714,9 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot error-velocity"
 
 PLOT
-1045
+960
 320
-1245
+1160
 470
 birds at the edge of the world
 ticks
@@ -724,45 +732,67 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot count error-turtles-at-the-wall"
 
 CHOOSER
-155
-85
-247
-130
+120
+135
+212
+180
 dimension
 dimension
 "1D" "2D"
 1
 
-MONITOR
-305
-525
-427
-570
-initial-random-seed
-initial-random-seed
-0
-1
-11
-
 CHOOSER
 10
-290
+305
 105
-335
+350
 psi-type
 psi-type
 "standard" "singular" "normalized"
 0
 
 CHOOSER
-5
-85
-143
-130
+15
+135
+115
+180
 topology-type
 topology-type
 "random" "collision" "bi-cluster"
 0
+
+SWITCH
+125
+50
+215
+83
+trace?
+trace?
+1
+1
+-1000
+
+INPUTBOX
+15
+50
+120
+115
+my-random-seed
+0.0
+1
+0
+Number
+
+INPUTBOX
+385
+530
+542
+590
+show-random-seed
+1700146.0
+1
+0
+Number
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -787,6 +817,8 @@ For simplicity, the velocity is set in (opposing) pairs. It allows for a simple 
 ## HOW TO USE IT
 
 Set the POPULATION size.
+
+If MY-RANDOM-SEED is zero then each run will create a different initial configuration of positions and velocities, otherwise the initial configuration will be fixed (for the given set of parameters). If TRACE? is "on" the birds leave a trace behind allowing to keep track of their route.
 
 Choose the RADIUS around the center in which the birds will be generated. Choose the initial TOPOLOGY-TYPE. "Random" places birds in a uniform distribution inside a circle, "collision" places all birds pointing to the centre, "bi-cluster" places them in two (symmetric) clusters. If DIMENSION is set to 1D, the birds will be placed on a line.
 
@@ -834,6 +866,8 @@ Some good combinations of TOPOLOGY, DIMENSION, and PSI to try are
 - random, 2D, standard, many birds
 - collision, 2D, singular
 - bi-cluster, 2D, standard
+
+To try diferent model parameters the same initial configuration, you may set the MY-RANDOM-SEED to a non-zero value, or copy one from SHOW-RANDOM-SEED.
 
 ## EXTENDING THE MODEL
 
